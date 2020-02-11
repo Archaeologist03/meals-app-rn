@@ -1,6 +1,7 @@
 import React from 'react';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { YellowBox } from 'react-native';
+import { useSelector } from 'react-redux';
 
 YellowBox.ignoreWarnings([
 	'VirtualizedLists should never be nested', // TODO: Remove when fixed
@@ -8,17 +9,17 @@ YellowBox.ignoreWarnings([
 
 import HeaderButton from '../components/HeaderButton';
 import MealList from '../components/MealList';
-import { MEALS } from '../data/dummy-data';
 
 const FavoritesScreen = props => {
-	const favMeals = MEALS.filter(meal => meal.id === 'm1' || meal.id === 'm2');
-	return <MealList listData={favMeals} navigation={props.navigation} />;
+	const availableMeals = useSelector(state => state.meals.favoriteMeals);
+
+	return <MealList listData={availableMeals} navigation={props.navigation} />;
 };
 
 FavoritesScreen.navigationOptions = navData => {
 	return {
 		headerTitle: 'Your Favorites',
-		headerLeft: (
+		headerLeft: () => (
 			<HeaderButtons HeaderButtonComponent={HeaderButton}>
 				<Item
 					title='Menu'
